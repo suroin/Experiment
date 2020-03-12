@@ -1,20 +1,15 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.security.Key;
 import java.util.List;
 
-public class HomePage extends Page {
+public class RegisterPage extends Page {
 
-    @FindBy(css = "[name=q]")
-    WebElement searchInputField;
-
-    public HomePage(WebDriver driver) {
+    public RegisterPage(WebDriver driver) {
         super(driver);
     }
 
@@ -22,9 +17,10 @@ public class HomePage extends Page {
         waitUntilElementisClickable(logo,5);
     }
 
+
     public void googleSearch(String str){
-        searchInputField.sendKeys(str);
-        searchInputField.sendKeys(Keys.ENTER);
+        registerButton.sendKeys(str);
+        registerButton.sendKeys(Keys.ENTER);
     }
 
     private   List<WebElement>  getSearchResults(){

@@ -1,26 +1,17 @@
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.HomePage;
+import pages.RegisterPage;
 
 public class HomePageTest extends BaseTest{
 
     @Test
-    protected void checkIfGoogleIsOpened() {
+    protected void loginTest() {
 
-      HomePage homePage = new HomePage(driver);
+      RegisterPage homePage = new RegisterPage(driver);
+      homePage.init();
       homePage.open();
-        String currentUrl = driver.getCurrentUrl().toString();
-        Assert.assertEquals(currentUrl,
-                "https://www.google.com/");
-    }
-
-    @Test
-    public void searchInGoogle(){
-        HomePage homePage = new HomePage(driver);
-        homePage.open();
-        homePage.googleSearch("banana");
-        String seacrhResult = homePage.getSearcResultsText(1);
-        Assert.assertTrue(seacrhResult.contains("banana"),"Google search worked incoorectly, search result is: " + seacrhResult);
+      homePage.clickOnLoginButton();
+      Assert.assertEquals(homePage.getCurrentUrl(),"https://qa.smclk.net/login");
 
     }
 

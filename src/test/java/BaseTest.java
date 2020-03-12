@@ -28,7 +28,7 @@ public class BaseTest {
 
 
     @Test
-    protected void checkIfGoogleIsOpened() {
+    protected void loginTest() {
 
         driver.manage().window().maximize();
         driver.get("https://google.com");

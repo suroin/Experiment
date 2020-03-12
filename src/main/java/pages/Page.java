@@ -3,6 +3,7 @@ package pages;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -13,21 +14,26 @@ import org.testng.Assert;
 
 public abstract class Page {
 
-    @FindBy(css = "img[alt=Google]")
+    @FindBy(className = "navbar-brand")
     WebElement logo;
 
+    @FindBy(css = "a[href*=login]")
+    WebElement loginButton;
+
+    @FindBy(css = "a[href*=register]")
+    WebElement registerButton;
+
     protected WebDriver driver;
-    protected final String siteUrl = "https://google.com/";
+    protected final String siteUrl = "https://qa.smclk.net";
 
 
     public Page(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void init(){
-        PageFactory.initElements(this.driver,this);
+    public void init() {
+        PageFactory.initElements(this.driver, this);
     }
-
 
 
     public void open() {
@@ -35,6 +41,36 @@ public abstract class Page {
         driver.get(siteUrl);
     }
 
+    public String getSiteUrl() {
+        return siteUrl;
+    }
+
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
+    //Wait element to be visible
+    public void elementToBeVisible(WebElement element) {
+        try {
+            new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+        } catch (WebDriverException e) {
+            e.printStackTrace();
+            throw new WebDriverException("Element is not visible");
+        }
+    }
+
+    public void click(WebElement element) {
+        elementToBeVisible(element);
+        element.click();
+    }
+
+    public void clickOnLoginButton(){
+        click(loginButton);
+    }
+
+    public void clickOnRegisterButton(){
+        click(registerButton);
+    }
 
     protected void waitElement(double seconds) {
         try {
@@ -44,9 +80,9 @@ public abstract class Page {
         }
     }
 
-    protected void waitUntilElementisClickable(WebElement element,int timeout) {
+    protected void waitUntilElementisClickable(WebElement element, int timeout) {
         try {
-            new WebDriverWait(driver,timeout).until(ExpectedConditions.elementToBeClickable(element));
+            new WebDriverWait(driver, timeout).until(ExpectedConditions.elementToBeClickable(element));
         } catch (TimeoutException e) {
             Assert.fail("Page isn't loaded properly");
         }
@@ -66,7 +102,7 @@ public abstract class Page {
 
     protected void waitElementToBeDisplayed(WebElement element, int timeout) {
         try {
-            new WebDriverWait(driver,timeout).until(ExpectedConditions.visibilityOf(element));
+            new WebDriverWait(driver, timeout).until(ExpectedConditions.visibilityOf(element));
         } catch (TimeoutException e) {
             Assert.fail("Page isn't loaded properly");
         }
